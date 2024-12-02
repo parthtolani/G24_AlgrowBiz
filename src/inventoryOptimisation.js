@@ -188,7 +188,7 @@ export default function InventoryOptimisation() {
     try {
       const response = await axios.get(`${backendUrl}/getInventoryOptimizations/${userId}`);
       if (response.data && response.data.list) {
-        setHistory(response.data);
+        setHistory(response.data.list);
       }
     } catch (error) {
       console.error('Error fetching optimization history:', error);
@@ -402,11 +402,13 @@ export default function InventoryOptimisation() {
 
             {selectedForecast && (
               <div className="forecast-details">
+              <div className="forecast-details-internal-div">
                 <h3>Forecast Details</h3>
                 <p><strong>Date:</strong> {selectedForecast.date}</p>
                 <p><strong>Budget:</strong> {selectedForecast.budget}</p>
                 <p><strong>State:</strong> {selectedForecast.state}</p>
                 <p><strong>Profit:</strong> {selectedForecast.profit}</p>
+              </div>
                 <h4>Optimized Inventory:</h4>
                 <ul>
                   {selectedForecast.products.map((product, index) => (
@@ -417,9 +419,20 @@ export default function InventoryOptimisation() {
                 </ul>
 
                 {selectedForecast.products.length > 0 && (
-                  <div className="chart">
+                  <div className="chart chart-prev">
                     <h4>Inventory Distribution</h4>
-                    <Pie data={pieData} />
+                    <Pie
+                      data={{
+                        labels: selectedForecast.products.map((product) => product.subcategory),
+                        datasets: [
+                          {
+                            data: selectedForecast.products.map((product) => product.quantity),
+                            backgroundColor: generateColors(selectedForecast.products.length),
+                            hoverOffset: 4,
+                          },
+                        ],
+                      }}
+                    />
                   </div>
                 )}
               </div>

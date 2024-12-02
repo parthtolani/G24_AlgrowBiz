@@ -39,19 +39,6 @@ const InventoryManagement = () => {
     9: ['Sneakers', 'Boots', 'Sandals', 'Heels', 'Slippers'],
     10: ['Skincare', 'Haircare', 'Makeup', 'Perfume', 'Body Lotion']
   };
-  // useEffect(() => {
-  //   fetchProducts();
-  // }, []);
-
-  // Fetch products from backend
-  // const fetchProducts = async () => {
-  //   try {
-  //     const response = await axios.get('http://127.0.0.1:5000/products');
-  //     setProducts(response.data);
-  //   } catch (error) {
-  //     console.error("Error fetching products:", error);
-  //   }
-  // };
 
   const fetchProductsByCategory = async (selectedCategory) => {
     try {
@@ -123,12 +110,12 @@ const InventoryManagement = () => {
     try {
       if (isEditing) {
         // Update product in backend
-        // await axios.put(`http://127.0.0.1:5000/inventory/modify?itemId=${newProduct.itemId}`, newProduct);    //// optional
+        // await axios.put(http://127.0.0.1:5000/inventory/modify?itemId=${newProduct.itemId}, newProduct);    //// optional
         await axios.put(`${backendUrl}/inventory/modify?userId=${userId}`, newProduct);
         setIsEditing(false);
       } else {
         //adding a new product
-        await axios.post(`{backendUrl}/inventory/insert?userId=${userId}`, newProduct);
+        await axios.post(`${backendUrl}/inventory/insert?userId=${userId}`, newProduct);
       }
       setNewProduct({ itemId: '', category: '', name: '', quantity: '', costPrice: '', sellingPrice: '' });
       fetchProductsByCategory(selectedCategory);
